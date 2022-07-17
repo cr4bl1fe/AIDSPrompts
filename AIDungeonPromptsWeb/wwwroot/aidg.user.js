@@ -1,14 +1,14 @@
 // ==UserScript==
 // @name        /aidg/ Quick Prompts
-// @namespace   https://prompts.aidg.club
+// @namespace   https://aidsprompts.crabdance.com
 // @match       https://play.aidungeon.io/*
 // @grant       none
 // @version     1.8
 // @author      /aidg/
 // @description Enables users to automatically import club prompts into AI Dungeon
-// @downloadURL https://prompts.aidg.club/aidg.user.js
+// @downloadURL https://aidsprompts.crabdance.com/aidg.user.js
 // @supportURL  https://github.com/Woruburu/AIDungeonPrompts/issues
-// @homepageURL https://prompts.aidg.club
+// @homepageURL https://aidsprompts.crabdance.com
 // @icon        data:image/png;base64,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
 // ==/UserScript==
 
@@ -163,7 +163,7 @@ function onLoadClick() {
 	if (!value) {
 		return;
 	}
-	fetch(`https://prompts.aidg.club/api/${value}`).then((response) => {
+	fetch(`https://aidsprompts.crabdance.com/api/${value}`).then((response) => {
 		if (response.status === 200) {
 			return response.json();
 		} else if (response.status === 404) {
