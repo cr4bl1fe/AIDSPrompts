@@ -90,7 +90,7 @@
 	{
 		<div class="form-group required">
 			@Html.LabelFor(m => m.Command.PromptTags)
-			<input readonly="@(!canEditTags)" asp-for="Command.PromptTags" class="form-control typeahead" data-role="tagsinput" />
+			<input readonly="@(!canEditTags)" asp-for="Command.PromptTags" class="form-control typeahead tags-input" data-role="tagsinput" />
 			<span class="invalid-feedback" asp-validation-for="Command.PromptTags"></span>
 		</div>
 	}

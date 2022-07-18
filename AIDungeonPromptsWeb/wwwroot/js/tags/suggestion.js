@@ -18,12 +18,12 @@ const tags = new Bloodhound({
 	},
 });
 
-const tagsElem = $("#Command_PromptTags");
+const tagsElem = $(".tags-input");
 
 tagsElem.tagsinput({
 	trimValue: true,
 	freeInput: true,
-	cancelConfirmKeysOnEmpty: false,
+	cancelConfirmKeysOnEmpty: document.location.pathname === "/",
 	confirmKeys: [
 		13, // Enter
 		44, // Comma
