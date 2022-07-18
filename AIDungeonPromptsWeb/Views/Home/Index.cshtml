@@ -14,7 +14,7 @@
 					<select class="form-control" asp-for="NsfwSetting" asp-items="Html.GetEnumSelectList<SearchNsfw>()"></select>
 				</div>
 				<div class="col-sm-6 mb-4">
-					<input class="form-control" asp-for="Tags" placeholder="Tags (comma delimited)"/>
+					<input class="form-control typeahead tags-input" data-role="tagsinput" asp-for="Tags" placeholder="Tags (comma delimited)"/>
 				</div>
 				<div class="col-sm-6 mb-4">
 					<div class="form-check">
@@ -151,3 +151,7 @@
 		</li>
 	</ul>
 </nav>
+
+@section Scripts {
+    <partial name="_TagSuggestionPartial.cshtml"/>
+}

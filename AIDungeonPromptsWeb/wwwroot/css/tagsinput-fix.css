@@ -1,3 +1,8 @@
+/* Fix form element placement */
+.bootstrap-tagsinput {
+	padding: 0.375rem 0.75rem !important;
+}
+
 /* Fix form element glow */
 .bootstrap-tagsinput:focus-within {
     border-color: #80bdff !important;
