@@ -1,0 +1,18 @@
+<script src="~/lib/typeahead/dist/typeahead.bundle.js" asp-append-version="true"></script>
+<script src="~/lib/bootstrap-tagsinput/dist/bootstrap-tagsinput.js" asp-append-version="true"></script>
+<link rel="stylesheet" href="~/lib/bootstrap-tagsinput/dist/bootstrap-tagsinput.css" asp-append-version="true"/>
+<link rel="stylesheet" href="~/css/tagsinput-fix.css" asp-append-version="true"/>
+@using AIDungeonPrompts.Web.ColorScheme
+@using AIDungeonPrompts.Application.Helpers
+@{
+    // TODO: move both instances of this in a separate helper
+	var colorPrefString = Context.Request.Cookies[CookieValueConstants.DarkModePreference];
+	if (string.IsNullOrWhiteSpace(colorPrefString) || !Enum.TryParse<ColorSchemePreference>(colorPrefString, out var colorPref))
+	{
+		colorPref = ColorSchemePreference.Dark;
+	}
+}
+@if (colorPref == ColorSchemePreference.Dark) {
+    <link rel="stylesheet" href="~/css/tagsinput-fix-dark.css" asp-append-version="true"/>
+}
+<script src="~/js/tags/suggestion.js" asp-append-version="true"></script>

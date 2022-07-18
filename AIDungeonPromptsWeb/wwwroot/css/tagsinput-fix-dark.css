@@ -1,0 +1,24 @@
+/* Typeahead.js styling mods */
+span.twitter-typeahead .tt-menu,
+span.twitter-typeahead .tt-dropdown-menu {
+	background-color: #191d21 !important;
+}
+span.twitter-typeahead .tt-suggestion,
+span.twitter-typeahead .tt-input {
+	color: #fff !important;
+}
+span.twitter-typeahead .tt-hint {
+	color: #d3d3d3 !important;
+}
+
+/* Type input mods */
+.bootstrap-tagsinput {
+	color: #fff !important;
+	background-color: #000 !important;
+	border: 1px solid #6c757d !important;
+}
+
+/* Focus background color fix */
+.bootstrap-tagsinput:focus-within {
+	background-color: #191d21 !important;
+}
