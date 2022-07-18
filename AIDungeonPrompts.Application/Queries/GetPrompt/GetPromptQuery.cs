@@ -42,6 +42,7 @@ namespace AIDungeonPrompts.Application.Queries.GetPrompt
 				.ThenInclude(e => e.Tag)
 				.Include(e => e.Children)
 				.AsNoTracking()
+				.AsSplitQuery()
 				.Select(prompt => new GetPromptViewModel
 				{
 					AuthorsNote = prompt.AuthorsNote,
