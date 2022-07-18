@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using AIDungeonPrompts.Domain.Entities.Abstract;
+using NpgsqlTypes;
 
 namespace AIDungeonPrompts.Domain.Entities
 {
@@ -7,5 +8,6 @@ namespace AIDungeonPrompts.Domain.Entities
 	{
 		public string Name { get; set; } = string.Empty;
 		public List<PromptTag> PromptTags { get; set; } = new List<PromptTag>();
+		public NpgsqlTsVector SearchVector { get; set; }
 	}
 }
