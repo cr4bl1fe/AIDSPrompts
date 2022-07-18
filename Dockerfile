@@ -10,7 +10,7 @@ COPY ["AIDungeonPrompts.Application/AIDungeonPrompts.Application.csproj", "AIDun
 COPY ["AIDungeonPrompts.Domain/AIDungeonPrompts.Domain.csproj", "AIDungeonPrompts.Domain/"]
 COPY ["AIDungeonPrompts.Persistence/AIDungeonPrompts.Persistence.csproj", "AIDungeonPrompts.Persistence/"]
 COPY ["AIDungeonPrompts.Infrastructure/AIDungeonPrompts.Infrastructure.csproj", "AIDungeonPrompts.Infrastructure/"]
-COPY ["AIDungeonPrompts.Backup.Persistence/AIDungeonPrompts.Backup.Persistence.csproj", "AIDungeonPrompts.Infrastructure/"]
+COPY ["AIDungeonPrompts.Backup.Persistence/AIDungeonPrompts.Backup.Persistence.csproj", "AIDungeonPrompts.Backup.Persistence/"]
 RUN dotnet restore "AIDungeonPromptsWeb/AIDungeonPrompts.Web.csproj"
 COPY . .
 WORKDIR "/src/AIDungeonPromptsWeb"
