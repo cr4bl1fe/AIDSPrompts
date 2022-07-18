@@ -17,9 +17,11 @@ using AIDungeonPrompts.Application.Queries.GetScript;
 using AIDungeonPrompts.Application.Queries.GetServerFlag;
 using AIDungeonPrompts.Application.Queries.GetUser;
 using AIDungeonPrompts.Application.Queries.SimilarPrompt;
+using AIDungeonPrompts.Application.Queries.SimilarTag;
 using AIDungeonPrompts.Domain.Entities;
 using AIDungeonPrompts.Domain.Enums;
 using AIDungeonPrompts.Web.Extensions;
+using AIDungeonPrompts.Web.Models;
 using AIDungeonPrompts.Web.Models.HoloAi;
 using AIDungeonPrompts.Web.Models.NovelAi;
 using AIDungeonPrompts.Web.Models.Prompts;
@@ -684,6 +686,25 @@ namespace AIDungeonPrompts.Web.Controllers
 
 		[HttpGet("[controller]/{id:int}")]
 		public IActionResult ViewOld(int? id) => RedirectToActionPermanent("View", new {id});
+
+		[HttpPost("/similar-tags")]
+		public async Task<ActionResult<SimilarTagQueryViewModel>> SimilarTags(SimilarTagQueryModel model, CancellationToken cancellationToken)
+		{
+			if (!ModelState.IsValid)
+			{
+				return BadRequest();
+			}
+
+			try
+			{
+				SimilarTagQueryViewModel? prompt = await _mediator.Send(new SimilarTagQuery(model.Tag), cancellationToken);
+				return prompt ?? (ActionResult<SimilarTagQueryViewModel>)NotFound();
+			}
+			catch (FluentValidation.ValidationException)
+			{
+				return BadRequest();
+			}
+		}
 
 		private async Task<List<WorldInfoJson>> ReadWorldInfoFromFileAsync(IFormFile file)
 		{
