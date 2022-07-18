@@ -90,7 +90,7 @@
 	{
 		<div class="form-group required">
 			@Html.LabelFor(m => m.Command.PromptTags)
-			<input readonly="@(!canEditTags)" asp-for="Command.PromptTags" class="form-control" />
+			<input readonly="@(!canEditTags)" asp-for="Command.PromptTags" class="form-control typeahead" data-role="tagsinput" />
 			<span class="invalid-feedback" asp-validation-for="Command.PromptTags"></span>
 		</div>
 	}
@@ -223,4 +223,5 @@
 	<partial name="_ValidationScriptsPartial.cshtml" />
 	<script src="~/js/prompts/create.js" asp-append-version="true"></script>
 	<script src="~/js/prompts/edit.js" asp-append-version="true"></script>
+    <partial name="_TagSuggestionPartial.cshtml"/>
 }

@@ -86,7 +86,7 @@ else
 		{
 			<div class="form-group required">
 				@Html.LabelFor(m => m.Command.PromptTags)
-				<input asp-for="Command.PromptTags" class="form-control"/>
+				<input asp-for="Command.PromptTags" class="form-control typeahead" data-role="tagsinput"/>
 				<span class="invalid-feedback" asp-validation-for="Command.PromptTags"></span>
 			</div>
 		}
@@ -186,5 +186,6 @@ else
 @section Scripts {
 	<partial name="_ValidationScriptsPartial.cshtml"/>
 	<script src="~/js/prompts/create.js" asp-append-version="true"></script>
+	<partial name="_TagSuggestionPartial.cshtml"/>
 }
 }

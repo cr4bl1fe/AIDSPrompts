@@ -10,9 +10,6 @@ namespace AIDungeonPrompts.Web
 	{
 		public static int Main(string[] args)
 		{
-			// use legacy timestamp separation
-			AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-
 			Log.Logger = new LoggerConfiguration()
 				.MinimumLevel.Debug()
 				.Enrich.FromLogContext()
