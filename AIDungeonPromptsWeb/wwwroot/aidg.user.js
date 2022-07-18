@@ -1,10 +1,10 @@
 // ==UserScript==
-// @name        /aidg/ Quick Prompts
+// @name        /aids/ Quick Prompts
 // @namespace   https://aidsprompts.crabdance.com
 // @match       https://play.aidungeon.io/*
 // @grant       none
-// @version     1.8
-// @author      /aidg/
+// @version     1.9
+// @author      /aids/
 // @description Enables users to automatically import club prompts into AI Dungeon
 // @downloadURL https://aidsprompts.crabdance.com/aidg.user.js
 // @supportURL  https://github.com/Woruburu/AIDungeonPrompts/issues
@@ -27,7 +27,7 @@ const scenarioEditUrl = 'scenarioEdit';
 /**
 * The query selector for the menu bar.
 */
-const menubarQuerySelector = 'div[style="display: flex; margin-right: 16px; margin-top: 4px;"]';
+const menubarQuerySelector = 'div[style="display: flex; justify-content: flex-end; margin-right: 16px; -webkit-box-pack: end;"]';
 
 /**
 * The text displayed in the window popup.
@@ -73,7 +73,7 @@ const uploadButtonQuerySelector = 'div[data-aidg-import-button]';
 * The text inside the upload button.
  * I just copied this from the World Info download button, some users have reported this doesn't show correctly.
 */
-const uploadButtonText = ''
+const uploadButtonPath = '<path fill="currentColor" d="M105.4 182.6c12.5 12.49 32.76 12.5 45.25 .001L224 109.3V352c0 17.67 14.33 32 32 32c17.67 0 32-14.33 32-32V109.3l73.38 73.38c12.49 12.49 32.75 12.49 45.25-.001c12.49-12.49 12.49-32.75 0-45.25l-128-128C272.4 3.125 264.2 0 256 0S239.6 3.125 233.4 9.375L105.4 137.4C92.88 149.9 92.88 170.1 105.4 182.6zM480 352h-160c0 35.35-28.65 64-64 64s-64-28.65-64-64H32c-17.67 0-32 14.33-32 32v96c0 17.67 14.33 32 32 32h448c17.67 0 32-14.33 32-32v-96C512 366.3 497.7 352 480 352zM432 456c-13.2 0-24-10.8-24-24c0-13.2 10.8-24 24-24s24 10.8 24 24C456 445.2 445.2 456 432 456z"></path>'
 
 /**
 * The alert text when the prompt is not found.
@@ -180,7 +180,7 @@ function onLoadClick() {
 		const promptTextArea = getLastQuerySelector(promptTextAreaSelector);
 		const memoryTextArea = getLastQuerySelector(memoryTextAreaSelector);
 		const authorsNoteInput = getLastQuerySelector(authorsNoteInputSelector);
-		const questTextArea = getLastQuerySelector(questsTextAreaSelector);
+		// const questTextArea = getLastQuerySelector(questsTextAreaSelector);
 
 		setReactInputValue(titleInput, json.title === null ? "" : json.title);
 		// apparently leaving description blank just reverts it to a previous one (??? wtf mormon) so we put a blank space instead
@@ -188,8 +188,9 @@ function onLoadClick() {
 		setReactInputValue(promptTextArea, json.promptContent === null ? "" : json.promptContent);
 		setReactInputValue(memoryTextArea, json.memory === null ? "" : json.memory);
 		setReactInputValue(authorsNoteInput, json.authorsNote === null ? "" : json.authorsNote);
-		setReactInputValue(questTextArea, json.quests === null ? "" : json.quests);
+		// setReactInputValue(questTextArea, json.quests === null ? "" : json.quests);
 	}).catch((error) => {
+        console.error(error);
 		alert(somethingWentWrongMessage(error.message));
 	});
 }
@@ -216,7 +217,8 @@ function timeOut() {
 		const clone2 = menubar.lastChild.lastChild.cloneNode();
 		const clone3 = menubar.lastChild.lastChild.lastChild.cloneNode();
 
-		clone3.innerText = uploadButtonText;
+        clone3.innerHTML = uploadButtonPath;
+        clone3.style = "color: #fff";
 		clone3.onclick = onLoadClick;
 
 		clone2.append(clone3);
