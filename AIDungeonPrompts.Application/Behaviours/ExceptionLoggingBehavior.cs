@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 namespace AIDungeonPrompts.Application.Behaviours
 {
 	public class ExceptionLoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-		where TRequest : notnull
+		where TRequest : IRequest<TResponse>
 	{
 		private readonly ILogger<TRequest> _logger;
 

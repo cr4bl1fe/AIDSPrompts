@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 namespace AIDungeonPrompts.Application.Behaviours
 {
 	public class RequestPerformanceBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-		where TRequest : notnull
+		where TRequest : IRequest<TResponse>
 	{
 		private readonly ILogger<TRequest> _logger;
 		private readonly Stopwatch _timer;
