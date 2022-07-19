@@ -79,5 +79,19 @@ namespace AIDungeonPrompts.Test.Application.Queries.SimilarTag
 			Assert.False(actual.Matched);
 			Assert.Empty(actual.SimilarTags);
 		}
+
+		[Fact]
+		public async Task Handle_ReturnsNoMatches_WhenDatabaseIsEmpty()
+		{
+			//arrange
+			var query = new SimilarTagQuery("TestTag");
+
+			//act
+			SimilarTagQueryViewModel? actual = await _handler.Handle(query);
+
+			//assert
+			Assert.False(actual.Matched);
+			Assert.Empty(actual.SimilarTags);
+		}
 	}
 }
