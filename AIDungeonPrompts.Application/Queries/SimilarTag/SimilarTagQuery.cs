@@ -47,7 +47,11 @@ namespace AIDungeonPrompts.Application.Queries.SimilarTag
 				return new SimilarTagQueryViewModel { Matched = false };
 			}
 
-			var searchQueryText = string.Join(" & ", sanitizedTrimmedTag.Split(' ').Where(t => !string.IsNullOrEmpty(t)).Select(t => t + ":*"));
+			var searchQueryText = string.Join(" & ", sanitizedTrimmedTag
+				.Split(' ')
+				.Where(t => !string.IsNullOrEmpty(t))
+				.Select(t => t + ":*"));
+
 			if (searchQueryText.Length == 0)
 			{
 				return new SimilarTagQueryViewModel { Matched = false };
@@ -60,7 +64,8 @@ namespace AIDungeonPrompts.Application.Queries.SimilarTag
 				.Select(e => new SimilarTagQueryViewModelTag
 				{
 					Tag = e.Name,
-					Score = (float)(e.SearchVector.RankCoverDensity(EF.Functions.ToTsQuery(searchQueryText)) + (e.Name.StartsWith(sanitizedTrimmedTag) ? TagSimilarityBias : 0.0))
+					Score = (float)(e.SearchVector.RankCoverDensity(EF.Functions.ToTsQuery(searchQueryText))
+						+ (e.Name.StartsWith(sanitizedTrimmedTag) ? TagSimilarityBias : 0.0))
 				})
 				.OrderByDescending(e => e.Score)
 				//.OrderBy(e => e.Tag.Length)
