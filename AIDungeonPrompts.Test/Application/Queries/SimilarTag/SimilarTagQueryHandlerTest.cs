@@ -61,11 +61,16 @@ namespace AIDungeonPrompts.Test.Application.Queries.SimilarTag
 			Assert.Empty(actual.SimilarTags);
 		}
 
-		[Fact]
-		public async Task Handle_ReturnsNoMatches_WhenDatabaseIsEmpty()
+		[Theory]
+		[InlineData("<")]
+		[InlineData("()")]
+		[InlineData("|")]
+		[InlineData("!")]
+		[InlineData("!()<|")]
+		public async Task Handle_ReturnsNoMatches_WhenInputIsInvalid(string input)
 		{
 			//arrange
-			var query = new SimilarTagQuery("TestTag");
+			var query = new SimilarTagQuery(input);
 
 			//act
 			SimilarTagQueryViewModel? actual = await _handler.Handle(query);
