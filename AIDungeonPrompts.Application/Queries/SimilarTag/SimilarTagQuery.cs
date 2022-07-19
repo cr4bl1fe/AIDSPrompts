@@ -6,6 +6,7 @@ using AIDungeonPrompts.Application.Abstractions.DbContexts;
 using AIDungeonPrompts.Application.Helpers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
 namespace AIDungeonPrompts.Application.Queries.SimilarTag
 {
@@ -22,6 +23,8 @@ namespace AIDungeonPrompts.Application.Queries.SimilarTag
 	public class SimilarTagQueryHandler : IRequestHandler<SimilarTagQuery, SimilarTagQueryViewModel>
 	{
 		private const int MaxResults = 5;
+		private static readonly Regex SanitizationPattern = new Regex("[<&|!\t\r\n()]");
+
 		private readonly IAIDungeonPromptsDbContext _dbContext;
 
 		public SimilarTagQueryHandler(IAIDungeonPromptsDbContext dbContext)
@@ -29,10 +32,19 @@ namespace AIDungeonPrompts.Application.Queries.SimilarTag
 			_dbContext = dbContext;
 		}
 
+		private static string SanitizeQueryString(string input)
+		{
+			return SanitizationPattern.Replace(input, "");
+		}
+
 		public async Task<SimilarTagQueryViewModel> Handle(SimilarTagQuery request,
 			CancellationToken cancellationToken = default)
 		{
-			var searchQueryText = string.Join(" & ", request.Tag.Trim().Split(' ').Select(t => t + ":*"));
+			var searchQueryText = string.Join(" & ", SanitizeQueryString(request.Tag).Trim().Split(' ').Where(t => !string.IsNullOrEmpty(t)).Select(t => t + ":*"));
+			if (searchQueryText.Length == 0)
+			{
+				return new SimilarTagQueryViewModel { Matched = false };
+			}
 
 			List<SimilarTagQueryViewModelTag>? similarTags = await _dbContext
 				.Tags
