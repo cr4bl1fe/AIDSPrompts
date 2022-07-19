@@ -23,6 +23,7 @@ namespace AIDungeonPrompts.Application.Queries.SimilarTag
 	public class SimilarTagQueryHandler : IRequestHandler<SimilarTagQuery, SimilarTagQueryViewModel>
 	{
 		private const int MaxResults = 5;
+		private const double TagSimilarityBias = 1.0;
 		private static readonly Regex SanitizationPattern = new Regex("[<&|!\t\r\n()]");
 
 		private readonly IAIDungeonPromptsDbContext _dbContext;
@@ -40,7 +41,13 @@ namespace AIDungeonPrompts.Application.Queries.SimilarTag
 		public async Task<SimilarTagQueryViewModel> Handle(SimilarTagQuery request,
 			CancellationToken cancellationToken = default)
 		{
-			var searchQueryText = string.Join(" & ", SanitizeQueryString(request.Tag).Trim().Split(' ').Where(t => !string.IsNullOrEmpty(t)).Select(t => t + ":*"));
+			var sanitizedTrimmedTag = SanitizeQueryString(request.Tag).Trim();
+			if (sanitizedTrimmedTag.Length == 0)
+			{
+				return new SimilarTagQueryViewModel { Matched = false };
+			}
+
+			var searchQueryText = string.Join(" & ", sanitizedTrimmedTag.Split(' ').Where(t => !string.IsNullOrEmpty(t)).Select(t => t + ":*"));
 			if (searchQueryText.Length == 0)
 			{
 				return new SimilarTagQueryViewModel { Matched = false };
@@ -49,13 +56,15 @@ namespace AIDungeonPrompts.Application.Queries.SimilarTag
 			List<SimilarTagQueryViewModelTag>? similarTags = await _dbContext
 				.Tags
 				.AsNoTracking()
-				.Where(e => e.SearchVector.Matches(EF.Functions.ToTsQuery(searchQueryText)))
+				.Where(e => e.SearchVector.Matches(EF.Functions.ToTsQuery(searchQueryText)) || e.Name.StartsWith(sanitizedTrimmedTag))
 				.Select(e => new SimilarTagQueryViewModelTag
 				{
 					Tag = e.Name,
-					Score = e.SearchVector.RankCoverDensity(EF.Functions.ToTsQuery(searchQueryText))
+					Score = (float)(e.SearchVector.RankCoverDensity(EF.Functions.ToTsQuery(searchQueryText)) + (e.Name.StartsWith(sanitizedTrimmedTag) ? TagSimilarityBias : 0.0))
 				})
 				.OrderByDescending(e => e.Score)
+				//.OrderBy(e => e.Tag.Length)
+				//.OrderBy(e => _dbContext.Prompts.Where(p => p.PromptTags.Any((t) => t.Id == e.Id)).Count())
 				.Take(MaxResults)
 				.ToListAsync(cancellationToken: cancellationToken);
 
