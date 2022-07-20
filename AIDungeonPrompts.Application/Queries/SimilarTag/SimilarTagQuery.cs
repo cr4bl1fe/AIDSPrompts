@@ -23,7 +23,7 @@ namespace AIDungeonPrompts.Application.Queries.SimilarTag
 	public class SimilarTagQueryHandler : IRequestHandler<SimilarTagQuery, SimilarTagQueryViewModel>
 	{
 		private const int MaxResults = 5;
-		private const double TagSimilarityBias = 1.0;
+		private const double TagSimilarityBias = 10.0;
 		private static readonly Regex SanitizationPattern = new Regex("[<&|!\t\r\n()]");
 
 		private readonly IAIDungeonPromptsDbContext _dbContext;
@@ -64,12 +64,12 @@ namespace AIDungeonPrompts.Application.Queries.SimilarTag
 				.Select(e => new SimilarTagQueryViewModelTag
 				{
 					Tag = e.Name,
-					Score = (float)(e.SearchVector.RankCoverDensity(EF.Functions.ToTsQuery(searchQueryText))
-						+ (e.Name.StartsWith(sanitizedTrimmedTag) ? TagSimilarityBias : 0.0))
+					NumPrompts = _dbContext.Prompts.Where(p => p.PublishDate != null && p.PromptTags.Any(pt => pt.TagId == e.Id)).Count(),
+					Score = (float)((e.SearchVector.RankCoverDensity(EF.Functions.ToTsQuery(searchQueryText))
+						+ (e.Name == sanitizedTrimmedTag ? TagSimilarityBias : 0.0)) * 10.0)
 				})
-				.OrderByDescending(e => e.Score)
-				//.OrderBy(e => e.Tag.Length)
-				//.OrderBy(e => _dbContext.Prompts.Where(p => p.PromptTags.Any((t) => t.Id == e.Id)).Count())
+				.Where(e => e.NumPrompts > 0)
+				.OrderByDescending(e => e.NumPrompts + e.Score)
 				.Take(MaxResults)
 				.ToListAsync(cancellationToken: cancellationToken);
 

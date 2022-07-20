@@ -9,6 +9,7 @@ namespace AIDungeonPrompts.Application.Queries.SimilarTag
 	public class SimilarTagQueryViewModelTag
 	{
 		public string Tag { get; set; } = string.Empty;
+		public int NumPrompts { get; set; }
 		public float Score { get; set; }
 	}
 

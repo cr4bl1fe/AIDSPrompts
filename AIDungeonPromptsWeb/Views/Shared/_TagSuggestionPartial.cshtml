@@ -4,15 +4,9 @@
 <link rel="stylesheet" href="~/css/tagsinput-fix.css" asp-append-version="true"/>
 @using AIDungeonPrompts.Web.ColorScheme
 @using AIDungeonPrompts.Application.Helpers
-@{
-    // TODO: move both instances of this in a separate helper
-	var colorPrefString = Context.Request.Cookies[CookieValueConstants.DarkModePreference];
-	if (string.IsNullOrWhiteSpace(colorPrefString) || !Enum.TryParse<ColorSchemePreference>(colorPrefString, out var colorPref))
-	{
-		colorPref = ColorSchemePreference.Dark;
-	}
-}
-@if (colorPref == ColorSchemePreference.Dark) {
+@if (Context.Items.TryGetValue(ItemsValueConstants.ColorPreferenceKey, out var colorPref)
+    && colorPref is not null
+    && (ColorSchemePreference)colorPref == ColorSchemePreference.Dark) {
     <link rel="stylesheet" href="~/css/tagsinput-fix-dark.css" asp-append-version="true"/>
 }
 <script src="~/js/tags/suggestion.js" asp-append-version="true"></script>
