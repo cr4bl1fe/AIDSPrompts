@@ -28,10 +28,10 @@ tagsElem.tagsinput({
 		13, // Enter
 		44, // Comma
 	],
-	itemValue: "tag",
 	typeaheadjs: {
 		limit: 10,
 		display: (e) => e.tag,
+		valueKey: "tag",
 		templates: {
 			suggestion: (e) => "<div>"+e.tag+" ("+e.numPrompts+")</div>",
 		},
