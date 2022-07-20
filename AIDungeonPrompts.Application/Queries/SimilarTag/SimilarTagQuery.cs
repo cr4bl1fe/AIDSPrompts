@@ -66,7 +66,7 @@ namespace AIDungeonPrompts.Application.Queries.SimilarTag
 				.Select(e => new SimilarTagQueryViewModelTag
 				{
 					Tag = e.Name,
-					NumPrompts = _dbContext.Prompts.Where(p => p.PublishDate != null && p.PromptTags.Any(pt => pt.TagId == e.Id)).Count(),
+					NumPrompts = _dbContext.Prompts.Where(p => !p.IsDraft && p.PromptTags.Any(pt => pt.TagId == e.Id)).Count(),
 					Score = (float)((e.SearchVector.RankCoverDensity(EF.Functions.ToTsQuery(searchQueryText))
 						+ (e.Name == sanitizedTrimmedTag ? TagSimilarityBias : 0.0)) * 10.0)
 				})
