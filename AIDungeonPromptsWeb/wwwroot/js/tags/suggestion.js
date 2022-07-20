@@ -13,7 +13,7 @@ const tags = new Bloodhound({
 			$(".bootstrap-tagsinput").removeClass("loading");
 
 			if (!response.matched) return [];
-			return response.similarTags.map((e) => e.tag + " (" + e.numPrompts + ")");
+			return response.similarTags;
 		},
 	},
 });
@@ -28,8 +28,13 @@ tagsElem.tagsinput({
 		13, // Enter
 		44, // Comma
 	],
+	itemValue: "tag",
 	typeaheadjs: {
 		limit: 10,
+		display: (e) => e.tag,
+		templates: {
+			suggestion: (e) => "<div>"+e.tag+" ("+e.numPrompts+")</div>",
+		},
 		source: tags,
 	},
 	tagClass: "badge badge-primary",
