@@ -1,12 +1,13 @@
 @using AIDungeonPrompts.Web.ColorScheme
 @using AIDungeonPrompts.Application.Helpers
 @{
-	var colorPrefString = Context.Request.Cookies[CookieValueConstants.DarkModePreference];
-	if (string.IsNullOrWhiteSpace(colorPrefString) || !Enum.TryParse<ColorSchemePreference>(colorPrefString, out var colorPref))
-	{
-		colorPref = ColorSchemePreference.Dark;
-	}
-	userService.TryGetCurrentUser(out var user);
+    var colorPrefString = Context.Request.Cookies[CookieValueConstants.DarkModePreference];
+    if (string.IsNullOrWhiteSpace(colorPrefString) || !Enum.TryParse<ColorSchemePreference>(colorPrefString, out var colorPref))
+    {
+        colorPref = ColorSchemePreference.Dark;
+    }
+    Context.Items.Add(ItemsValueConstants.ColorPreferenceKey, colorPref);
+    userService.TryGetCurrentUser(out var user);
 }
 <!DOCTYPE html>
 <html lang="en">

@@ -13,7 +13,7 @@ const tags = new Bloodhound({
 			$(".bootstrap-tagsinput").removeClass("loading");
 
 			if (!response.matched) return [];
-			return response.similarTags.map((e) => e.tag);
+			return response.similarTags.map((e) => e.tag + " (" + e.numPrompts + ")");
 		},
 	},
 });
