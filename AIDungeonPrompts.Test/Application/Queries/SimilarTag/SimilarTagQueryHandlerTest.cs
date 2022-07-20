@@ -28,7 +28,7 @@ namespace AIDungeonPrompts.Test.Application.Queries.SimilarTag
 			}
 
 			await DbContext.SaveChangesAsync();
-			var query = new SimilarTagQuery("TestTag");
+			var query = new SimilarTagQuery("TestTag", false);
 
 			//act
 			SimilarTagQueryViewModel? actual = await _handler.Handle(query);
@@ -51,7 +51,7 @@ namespace AIDungeonPrompts.Test.Application.Queries.SimilarTag
 			}
 
 			await DbContext.SaveChangesAsync();
-			var query = new SimilarTagQuery("NonMatchingTag");
+			var query = new SimilarTagQuery("NonMatchingTag", false);
 
 			//act
 			SimilarTagQueryViewModel? actual = await _handler.Handle(query);
@@ -70,7 +70,7 @@ namespace AIDungeonPrompts.Test.Application.Queries.SimilarTag
 		public async Task Handle_ReturnsNoMatches_WhenInputIsInvalid(string input)
 		{
 			//arrange
-			var query = new SimilarTagQuery(input);
+			var query = new SimilarTagQuery(input, false);
 
 			//act
 			SimilarTagQueryViewModel? actual = await _handler.Handle(query);
@@ -84,7 +84,7 @@ namespace AIDungeonPrompts.Test.Application.Queries.SimilarTag
 		public async Task Handle_ReturnsNoMatches_WhenDatabaseIsEmpty()
 		{
 			//arrange
-			var query = new SimilarTagQuery("TestTag");
+			var query = new SimilarTagQuery("TestTag", false);
 
 			//act
 			SimilarTagQueryViewModel? actual = await _handler.Handle(query);

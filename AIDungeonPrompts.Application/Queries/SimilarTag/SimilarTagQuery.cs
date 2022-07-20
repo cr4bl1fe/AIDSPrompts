@@ -12,12 +12,14 @@ namespace AIDungeonPrompts.Application.Queries.SimilarTag
 {
 	public class SimilarTagQuery : IRequest<SimilarTagQueryViewModel>
 	{
-		public SimilarTagQuery(string tag)
+		public SimilarTagQuery(string tag, bool publicPromptsOnly = true)
 		{
 			Tag = tag;
+			PublicPromptsOnly = publicPromptsOnly;
 		}
 
 		public string Tag { get; set; }
+		public bool PublicPromptsOnly { get; set; }
 	}
 
 	public class SimilarTagQueryHandler : IRequestHandler<SimilarTagQuery, SimilarTagQueryViewModel>
@@ -68,7 +70,7 @@ namespace AIDungeonPrompts.Application.Queries.SimilarTag
 					Score = (float)((e.SearchVector.RankCoverDensity(EF.Functions.ToTsQuery(searchQueryText))
 						+ (e.Name == sanitizedTrimmedTag ? TagSimilarityBias : 0.0)) * 10.0)
 				})
-				.Where(e => e.NumPrompts > 0)
+				.Where(e => e.NumPrompts > 0 || !request.PublicPromptsOnly)
 				.OrderByDescending(e => e.NumPrompts + e.Score)
 				.Take(MaxResults)
 				.ToListAsync(cancellationToken: cancellationToken);
