@@ -1,7 +1,7 @@
 @using AIDungeonPrompts.Web.ColorScheme
 @using AIDungeonPrompts.Application.Helpers
 @{
-    ViewData["WebsiteName"] = WebsiteValueConstants.WebsiteName;
+    Context.Items.Add(ItemsValueConstants.WebsiteNameKey, WebsiteValueConstants.WebsiteName);
     var colorPrefString = Context.Request.Cookies[CookieValueConstants.DarkModePreference];
     if (string.IsNullOrWhiteSpace(colorPrefString) || !Enum.TryParse<ColorSchemePreference>(colorPrefString, out var colorPref))
     {
@@ -20,7 +20,7 @@
 	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 	<link rel="manifest" href="/site.webmanifest">
 	@await RenderSectionAsync("Embed", false)
-	<title>@(ViewData["Title"] != null ? $"{ViewData["Title"]} - " : string.Empty)@ViewData["WebsiteName"]</title>
+	<title>@(ViewData["Title"] != null ? $"{ViewData["Title"]} - " : string.Empty)@Context.Items[ItemsValueConstants.WebsiteNameKey]</title>
 	@{
 		switch (colorPref)
 		{
@@ -44,7 +44,7 @@
 	}
 	<nav class="navbar @navbarClass navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3">
 		<div class="container">
-			<a class="navbar-brand" asp-controller="Home" asp-action="Index">@ViewData["WebsiteName"]</a>
+			<a class="navbar-brand" asp-controller="Home" asp-action="Index">@Context.Items[ItemsValueConstants.WebsiteNameKey]</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
 			        aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>

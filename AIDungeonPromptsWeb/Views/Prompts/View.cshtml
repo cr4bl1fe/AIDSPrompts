@@ -16,7 +16,7 @@
         var uriBasePath = string.Format("{0}://{1}", Context.Request.Scheme, Context.Request.Host);
     }
     <meta name="twitter:card" content="summary" />
-    <meta property="og:title" content="@Model.Prompt.Title - @ViewData["WebsiteName"]" />
+    <meta property="og:title" content="@Model.Prompt.Title - @Context.Items[ItemsValueConstants.WebsiteNameKey]" />
     <meta property="og:type" content="article" />
     <meta property="og:description" content="@Model.Prompt.PromptContent.Truncate(200)" />
     <meta property="og:url" content="@(uriBasePath + Context.Request.Path)" />
