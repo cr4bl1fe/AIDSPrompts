@@ -1,4 +1,5 @@
 @using AIDungeonPrompts.Application.Helpers
+@using AIDungeonPrompts.Web.Extensions
 @model ViewPromptViewModel
 @{
 	ViewData["Title"] = Model.Prompt.Title;
@@ -9,6 +10,16 @@
 		RoleHelper.CanEdit(user.Role)
 		);
 	var showDelete = loggedIn && RoleHelper.CanDelete(user!.Role);
+}
+@section Embed {
+    <meta name="twitter:card" content="summary" />
+    <meta property="og:title" content="@Model.Prompt.Title" />
+    <meta property="og:type" content="article" />
+    <meta property="og:description" content="@Model.Prompt.PromptContent.Truncate(200)" />
+    @foreach (var tag in Model.Prompt.PromptTags)
+    {
+    <meta property="article:tag" content="@tag.Name" />
+    }
 }
 @if (Model.Reported ?? false)
 {
